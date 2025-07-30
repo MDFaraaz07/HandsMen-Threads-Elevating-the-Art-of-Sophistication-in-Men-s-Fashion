@@ -1,0 +1,9 @@
+Purpose:
+Schedules the LoyaltyScoreBatch to run every week automatically.
+CODE :-
+global class WeeklyLoyaltyScheduler implements Schedulable {
+    global void execute(SchedulableContext sc) {
+        LoyaltyScoreBatch batch = new LoyaltyScoreBatch();
+        Database.executeBatch(batch, 200);
+    }
+}

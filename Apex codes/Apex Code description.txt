@@ -1,0 +1,2 @@
+Apex Codes
+In the HandsMen Threads Salesforce CRM project, Apex programming was used to enhance automation and achieve functionalities that were not possible through declarative tools alone. Below are the primary Apex classes and triggers used in the system:

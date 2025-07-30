@@ -1,0 +1,26 @@
+Purpose:
+Runs weekly to calculate customer loyalty scores based on their order history and sends notification emails.
+CODE :-
+global class LoyaltyScoreBatch implements Database.Batchable<SObject> {
+    global Database.QueryLocator start(Database.BatchableContext bc) {
+        return Database.getQueryLocator('SELECT Id, Name FROM Customer__c');
+    }
+
+    global void execute(Database.BatchableContext bc, List<Customer__c> scope) {
+        for (Customer__c cust : scope) {
+            // Dummy loyalty logic: 10 points per order
+            Integer orderCount = [SELECT COUNT() FROM Order__c WHERE Customer__c = :cust.Id];
+            cust.Loyalty_Score__c = orderCount * 10;
+        }
+        update scope;
+    }
+
+    global void finish(Database.BatchableContext bc) {
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        mail.setToAddresses(new String[] {'admin@example.com'});
+        mail.setSubject('Loyalty Scores Updated');
+        mail.setPlainTextBody('Weekly loyalty scores have been updated successfully.');
+        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {mail});
+    }
+}
+________________________________________

@@ -1,0 +1,19 @@
+Purpose:
+Handles sending email notifications when inventory is low.
+CODE :-
+public class InventoryNotifier {
+    public static void sendLowStockAlert(List<Product__c> lowStockProducts) {
+        List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();
+
+        for (Product__c p : lowStockProducts) {
+            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+            mail.setToAddresses(new String[] {'admin@example.com'});
+            mail.setSubject('Low Inventory Alert: ' + p.Name);
+            mail.setPlainTextBody('The stock for product "' + p.Name + '" is low. Current stock: ' + p.Stock__c);
+            mails.add(mail);
+        }
+
+        Messaging.sendEmail(mails);
+    }
+}
+_________________
